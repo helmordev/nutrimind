@@ -27,6 +27,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int|null $grade
  * @property string|null $section
  * @property string|null $teacher_id
+ * @property string|null $classroom_id
  * @property bool $is_active
  * @property bool $must_change_password
  * @property-read CarbonInterface $created_at
@@ -40,6 +41,7 @@ use Laravel\Sanctum\HasApiTokens;
     'grade',
     'section',
     'teacher_id',
+    'classroom_id',
     'is_active',
     'must_change_password',
 ])]
@@ -83,11 +85,27 @@ final class User extends Authenticatable
     }
 
     /**
+     * @return BelongsTo<Classroom, $this>
+     */
+    public function classroom(): BelongsTo
+    {
+        return $this->belongsTo(Classroom::class, 'classroom_id');
+    }
+
+    /**
      * @return HasMany<User, $this>
      */
     public function students(): HasMany
     {
         return $this->hasMany(self::class, 'teacher_id');
+    }
+
+    /**
+     * @return HasMany<Classroom, $this>
+     */
+    public function classrooms(): HasMany
+    {
+        return $this->hasMany(Classroom::class, 'teacher_id');
     }
 
     /**

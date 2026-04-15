@@ -20,5 +20,6 @@ test('to array', function (): void {
             'must_change_password',
             'created_at',
             'updated_at',
+            'classroom_id',
         ]);
 });
