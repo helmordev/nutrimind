@@ -12,6 +12,8 @@ use App\Http\Controllers\Teacher\StudentController;
 use App\Http\Controllers\Web\LoginController;
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/', '/login');
+
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:web-login');
