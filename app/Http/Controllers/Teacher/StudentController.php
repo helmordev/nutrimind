@@ -20,6 +20,11 @@ use Illuminate\Support\Str;
 
 final class StudentController
 {
+    public function index(): RedirectResponse
+    {
+        return redirect()->route('teacher.class');
+    }
+
     public function create(): View
     {
         return view('teacher.students.create');

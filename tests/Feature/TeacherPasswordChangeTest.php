@@ -42,7 +42,7 @@ test('teacher can change password and clear forced password flag', function (): 
         'password_confirmation' => 'new-password',
     ]);
 
-    $response->assertRedirect(route('teacher.dashboard'));
+    $response->assertRedirect(route('teacher.class'));
     $response->assertSessionHas('success', 'Password changed successfully.');
 
     expect($teacher->fresh())
@@ -86,21 +86,21 @@ test('teacher password change requires minimum password length', function (): vo
     ])->assertSessionHasErrors('password');
 });
 
-test('teacher with forced password change cannot access dashboard until password is changed', function (): void {
+test('teacher with forced password change cannot access class page until password is changed', function (): void {
     $teacher = User::factory()->teacher()->mustChangePassword()->create();
 
     $this->actingAs($teacher)
-        ->get(route('teacher.dashboard'))
+        ->get(route('teacher.class'))
         ->assertRedirect(route('teacher.password.edit'));
 });
 
-test('teacher can access dashboard after changing password', function (): void {
+test('teacher can access class page after changing password', function (): void {
     $teacher = User::factory()->teacher()->create([
         'password' => bcrypt('updated-password'),
         'must_change_password' => false,
     ]);
 
     $this->actingAs($teacher)
-        ->get(route('teacher.dashboard'))
+        ->get(route('teacher.class'))
         ->assertOk();
 });

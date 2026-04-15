@@ -66,7 +66,7 @@ final class LoginController
 
         return match ($user->role) {
             UserRole::SuperAdmin => redirect()->intended('/admin/dashboard'),
-            default => redirect()->intended(route('teacher.dashboard')),
+            default => redirect()->intended(route('teacher.class')),
         };
     }
 

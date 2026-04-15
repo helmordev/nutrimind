@@ -8,8 +8,8 @@
 - [completed] Test, format, and commit Task 13.
 - [completed] Complete Task 14: Basic Admin Dashboard.
 - [completed] Test, format, and commit Task 14.
-- [pending] Complete Task 15: Basic Teacher Dashboard.
-- [pending] Test, format, and commit Task 15.
+- [completed] Complete Task 15: Basic Teacher Dashboard.
+- [completed] Test, format, and commit Task 15.
 - [pending] Complete Task 16: Postman Collection.
 - [pending] Test/review and commit Task 16.
 - [pending] Add solid browser test coverage under `tests/Browser/` for the account chain.
@@ -25,3 +25,5 @@
 - Verification for Task 13: `php artisan test --compact tests/Feature/TeacherStudentTest.php tests/Feature/StudentAuthTest.php tests/Feature/StudentWorldApiTest.php tests/Feature/StudentSyncStateApiTest.php` passed with 40 tests, and `vendor/bin/pint --dirty --format agent` passed.
 - Task 14 replaced the static admin dashboard route with controller-backed metrics, added an admin layout, and introduced a minimal read-only student list for working dashboard navigation.
 - Verification for Task 14: `php artisan test --compact tests/Feature/AdminDashboardTest.php tests/Feature/AdminTeacherTest.php tests/Feature/WebAuthTest.php` passed with 34 tests, and `vendor/bin/pint --dirty --format agent` passed.
+- Task 15 added the planned teacher layout and `/teacher/class` landing page, showed each teacher's student list with LRN/grade/section, and kept `/teacher/dashboard` and `/teacher/students` working as compatibility routes to the new class page.
+- Verification for Task 15: `php artisan test --compact tests/Feature/TeacherDashboardTest.php tests/Feature/TeacherStudentTest.php tests/Feature/ClassroomTest.php tests/Feature/TeacherPasswordChangeTest.php tests/Feature/WebAuthTest.php` passed with 76 tests, and `vendor/bin/pint --dirty --format agent` passed.

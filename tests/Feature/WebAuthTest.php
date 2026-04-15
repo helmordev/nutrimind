@@ -12,7 +12,7 @@ test('login page renders successfully', function (): void {
         ->assertSee('Teacher & Admin Portal', false);
 });
 
-test('teacher can login and is redirected to teacher dashboard', function (): void {
+test('teacher can login and is redirected to teacher class page', function (): void {
     $teacher = User::factory()->teacher()->create([
         'password' => bcrypt('password123'),
     ]);
@@ -21,7 +21,7 @@ test('teacher can login and is redirected to teacher dashboard', function (): vo
         'username' => $teacher->username,
         'password' => 'password123',
     ])
-        ->assertRedirect(route('teacher.dashboard'));
+        ->assertRedirect(route('teacher.class'));
 
     $this->assertAuthenticatedAs($teacher);
 });
@@ -150,7 +150,7 @@ test('session is regenerated after successful login', function (): void {
     $this->post('/login', [
         'username' => $teacher->username,
         'password' => 'password123',
-    ])->assertRedirect(route('teacher.dashboard'));
+    ])->assertRedirect(route('teacher.class'));
 
     $this->assertAuthenticatedAs($teacher);
 });

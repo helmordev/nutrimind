@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\TeacherController;
+use App\Http\Controllers\Teacher\ClassController;
 use App\Http\Controllers\Teacher\ClassroomController;
 use App\Http\Controllers\Teacher\PasswordController;
 use App\Http\Controllers\Teacher\StudentController;
@@ -25,7 +26,9 @@ Route::middleware(['auth', 'role.teacher'])->prefix('teacher')->name('teacher.')
     Route::post('/change-password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::middleware('password.changed')->group(function (): void {
-        Route::view('/dashboard', 'teacher.dashboard')->name('dashboard');
+        Route::get('/class', [ClassController::class, 'index'])->name('class');
+        Route::get('/dashboard', [ClassController::class, 'index'])->name('dashboard');
+        Route::get('/students', [StudentController::class, 'index'])->name('students.index');
         Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
         Route::post('/students', [StudentController::class, 'store'])->name('students.store');
         Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');

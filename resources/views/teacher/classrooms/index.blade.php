@@ -9,7 +9,7 @@
 <body class="min-h-screen bg-gray-100">
     <nav class="bg-white shadow-sm border-b border-gray-200">
         <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="{{ route('teacher.dashboard') }}" class="text-lg font-bold text-gray-800">NutriMind Teacher</a>
+            <a href="{{ route('teacher.class') }}" class="text-lg font-bold text-gray-800">NutriMind Teacher</a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="text-sm text-red-600 hover:text-red-800">Logout</button>
@@ -55,7 +55,7 @@
         @endif
 
         <div class="mt-6 text-center">
-            <a href="{{ route('teacher.dashboard') }}" class="text-sm text-blue-600 hover:text-blue-800">&larr; Back to Dashboard</a>
+            <a href="{{ route('teacher.class') }}" class="text-sm text-blue-600 hover:text-blue-800">&larr; Back to My Class</a>
         </div>
     </div>
 </body>

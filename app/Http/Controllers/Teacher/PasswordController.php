@@ -36,7 +36,7 @@ final class PasswordController
         ]);
 
         return redirect()
-            ->route('teacher.dashboard')
+            ->route('teacher.class')
             ->with('success', 'Password changed successfully.');
     }
 }
