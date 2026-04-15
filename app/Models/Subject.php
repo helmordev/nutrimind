@@ -50,4 +50,12 @@ final class Subject extends Model
     {
         return $this->hasManyThrough(Level::class, Quarter::class);
     }
+
+    /**
+     * @return HasMany<StudentDifficulty, $this>
+     */
+    public function studentDifficulties(): HasMany
+    {
+        return $this->hasMany(StudentDifficulty::class);
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\StudentLoginController;
+use App\Http\Controllers\Student\WorldController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,5 +17,5 @@ Route::middleware('auth:sanctum')->group(function (): void {
 });
 
 Route::middleware(['auth:sanctum', 'role.student'])->prefix('v1/student')->group(function (): void {
-    // Student API routes will be added in later tasks
+    Route::get('/worlds', [WorldController::class, 'index']);
 });

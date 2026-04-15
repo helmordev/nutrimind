@@ -1,18 +1,23 @@
-# Task 11 Plan
+# Phase 1 Sprint Plan
 
-- [completed] Implement teacher forced password change flow.
-- [completed] Register `EnsurePasswordChanged` middleware alias and apply it to protected teacher routes.
-- [completed] Add teacher password change controller, request, and view.
-- [completed] Update login redirect behavior to use the actual teacher dashboard route.
-- [completed] Add Pest feature tests for forced password change behavior and validation.
-- [completed] Run targeted tests and Pint.
+- [completed] Audit current implementation status for remaining Phase 1 tasks 12-17.
+- [completed] Commit verified Task 11 forced password flow.
+- [completed] Complete Task 12: Student API - Worlds Endpoint.
+- [completed] Test, format, and commit Task 12.
+- [pending] Complete Task 13: Student API - Sync State Endpoint.
+- [pending] Test, format, and commit Task 13.
+- [pending] Complete Task 14: Basic Admin Dashboard.
+- [pending] Test, format, and commit Task 14.
+- [pending] Complete Task 15: Basic Teacher Dashboard.
+- [pending] Test, format, and commit Task 15.
+- [pending] Complete Task 16: Postman Collection.
+- [pending] Test/review and commit Task 16.
+- [pending] Add solid browser test coverage under `tests/Browser/` for the account chain.
+- [pending] Complete Task 17: Smoke Test and end-to-end verification.
+- [pending] Test, document, and commit Task 17.
 
 # Review
 
-- Added `EnsurePasswordChanged` middleware and registered it as `password.changed` in `bootstrap/app.php`.
-- Added `/teacher/change-password` GET and POST routes and applied forced-password protection to the rest of the teacher route group in `routes/web.php`.
-- Implemented `Teacher\PasswordController` and `Teacher\ChangePasswordRequest`.
-- Added `resources/views/teacher/change-password.blade.php` using the existing Tailwind CDN page style.
-- Updated `LoginController` to send teachers with `must_change_password = true` to the password form and corrected the normal teacher redirect to `route('teacher.dashboard')`.
-- Added focused coverage in `tests/Feature/WebAuthTest.php`, `tests/Feature/RoleMiddlewareTest.php`, and new `tests/Feature/TeacherPasswordChangeTest.php`.
-- Verification: `php artisan test --compact tests/Feature/WebAuthTest.php tests/Feature/RoleMiddlewareTest.php tests/Feature/TeacherPasswordChangeTest.php` passed with 42 tests, and `vendor/bin/pint --dirty --format agent` passed.
+- Task 11 was committed as `aa7b58d` after targeted feature verification and Pint.
+- Task 12 added `GET /api/v1/student/worlds` with grade-filtered subject data, nested quarters/levels, unlock status, and per-subject student difficulty.
+- Verification for Task 12: `php artisan test --compact tests/Feature/StudentAuthTest.php tests/Feature/StudentWorldApiTest.php` passed with 16 tests, and `vendor/bin/pint --dirty --format agent` passed.
