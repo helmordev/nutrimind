@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-it('has welcome page', function (): void {
-    $page = visit('/');
+it('has login page', function (): void {
+    $page = visit('/login');
 
-    $page->assertSee("Let's get started");
+    $page->assertSee('Teacher & Admin Portal');
 });

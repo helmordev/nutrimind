@@ -31,7 +31,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
-#[Hidden(['password'])]
+#[Hidden(['password', 'remember_token'])]
 final class User extends Authenticatable
 {
     use HasApiTokens;

@@ -27,6 +27,7 @@ final class UserFactory extends Factory
             'section' => fake()->randomElement(['A', 'B', 'C']),
             'is_active' => true,
             'must_change_password' => false,
+            'remember_token' => null,
         ];
     }
 

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignUuid('teacher_id')->nullable()->constrained('users')->nullOnDelete();
             $table->boolean('is_active')->default(true);
             $table->boolean('must_change_password')->default(false);
+            $table->rememberToken();
             $table->timestamps();
         });
 

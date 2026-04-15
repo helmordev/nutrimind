@@ -51,14 +51,14 @@ it('has correct columns on users table', function (): void {
     $expectedColumns = [
         'id', 'role', 'full_name', 'username', 'password',
         'grade', 'section', 'teacher_id', 'is_active',
-        'must_change_password', 'created_at', 'updated_at',
+        'must_change_password', 'remember_token', 'created_at', 'updated_at',
     ];
 
     foreach ($expectedColumns as $column) {
         expect(Schema::hasColumn('users', $column))->toBeTrue(sprintf("Column '%s' should exist on users table", $column));
     }
 
-    $removedColumns = ['name', 'email', 'email_verified_at', 'remember_token'];
+    $removedColumns = ['name', 'email', 'email_verified_at'];
 
     foreach ($removedColumns as $column) {
         expect(Schema::hasColumn('users', $column))->toBeFalse(sprintf("Column '%s' should NOT exist on users table", $column));
