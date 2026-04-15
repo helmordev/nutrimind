@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<User>
@@ -19,18 +19,57 @@ final class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'role' => UserRole::Student,
+            'full_name' => fake()->name(),
+            'username' => fake()->unique()->userName(),
             'password' => 'password',
-            'remember_token' => Str::random(10),
+            'grade' => fake()->numberBetween(1, 6),
+            'section' => fake()->randomElement(['A', 'B', 'C']),
+            'is_active' => true,
+            'must_change_password' => false,
         ];
     }
 
-    public function unverified(): self
+    public function student(): self
     {
         return $this->state(fn (array $attributes): array => [
-            'email_verified_at' => null,
+            'role' => UserRole::Student,
+            'grade' => fake()->numberBetween(1, 6),
+            'section' => fake()->randomElement(['A', 'B', 'C']),
+        ]);
+    }
+
+    public function teacher(): self
+    {
+        return $this->state(fn (array $attributes): array => [
+            'role' => UserRole::Teacher,
+            'grade' => null,
+            'section' => null,
+            'teacher_id' => null,
+        ]);
+    }
+
+    public function superAdmin(): self
+    {
+        return $this->state(fn (array $attributes): array => [
+            'role' => UserRole::SuperAdmin,
+            'grade' => null,
+            'section' => null,
+            'teacher_id' => null,
+        ]);
+    }
+
+    public function inactive(): self
+    {
+        return $this->state(fn (array $attributes): array => [
+            'is_active' => false,
+        ]);
+    }
+
+    public function mustChangePassword(): self
+    {
+        return $this->state(fn (array $attributes): array => [
+            'must_change_password' => true,
         ]);
     }
 }
