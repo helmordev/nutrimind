@@ -13,15 +13,15 @@ it('lets an admin sign in and reach the teacher creation form in the browser', f
 
     $page = visit('/login');
 
-    $page->assertSee('Teacher & Admin Portal')
+    $page->assertSee('NutriMind')
         ->type('username', 'registrar')
         ->type('password', 'password')
         ->press('Sign In')
         ->assertPathIs('/admin/dashboard')
-        ->assertSee('Admin Dashboard')
+        ->assertSee('Dashboard')
         ->click('Create Teacher')
         ->assertPathIs('/admin/teachers/create')
-        ->assertSee('Create Teacher Account')
+        ->assertSee('Create Teacher')
         ->assertSee('Full Name')
         ->assertSee('Username')
         ->assertSee('Grade')
@@ -30,5 +30,5 @@ it('lets an admin sign in and reach the teacher creation form in the browser', f
         ->type('username', 'browserteacher')
         ->select('grade', '5')
         ->type('section', 'Section B')
-        ->assertSee('Create Teacher Account');
+        ->assertSee('Create Teacher');
 });

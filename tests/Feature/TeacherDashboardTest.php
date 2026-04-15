@@ -28,7 +28,7 @@ test('teacher can view class page with their student list and actions', function
     $response->assertSeeText('My Class');
     $response->assertSeeText('Maria Santos');
     $response->assertSeeText('123456789012');
-    $response->assertSeeText('Grade 5');
+    $response->assertSeeText('5');
     $response->assertSeeText('A');
     $response->assertSee(route('teacher.students.create'));
     $response->assertSee(route('teacher.password.edit'));

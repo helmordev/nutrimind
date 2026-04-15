@@ -1,82 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriMind - {{ $classroom->name }}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="min-h-screen bg-gray-100">
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="{{ route('teacher.class') }}" class="text-lg font-bold text-gray-800">NutriMind Teacher</a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="text-sm text-red-600 hover:text-red-800">Logout</button>
-            </form>
-        </div>
-    </nav>
+@extends('layouts.teacher')
 
-    <div class="max-w-4xl mx-auto mt-8 px-4">
-        @if (session('success'))
-            <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-md">
-                <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
+@section('title', '{{ $classroom->name }} - NutriMind Teacher')
+
+@section('content')
+    <div class="mb-8">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('teacher.classrooms.index') }}" class="text-text-muted transition-colors hover:text-text-primary">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+            </a>
+            <div>
+                <h1 class="text-2xl font-bold text-text-primary">{{ $classroom->name }}</h1>
+                <p class="mt-1 text-sm text-text-secondary">Grade {{ $classroom->grade }} — {{ $classroom->section }}</p>
             </div>
-        @endif
-
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="flex items-start justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-800">{{ $classroom->name }}</h1>
-                    <p class="text-sm text-gray-500 mt-1">Grade {{ $classroom->grade }} &bull; {{ $classroom->section }}</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Room Code</p>
-                    <span class="font-mono bg-blue-100 text-blue-800 px-3 py-2 rounded text-2xl font-bold select-all">{{ $classroom->room_code }}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-semibold text-gray-800">Students ({{ $classroom->students->count() }})</h2>
-            </div>
-
-            @if ($classroom->students->isEmpty())
-                <p class="text-gray-500 text-sm">No students in this classroom yet. Create students and assign them to this classroom.</p>
-            @else
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($classroom->students as $student)
-                                <tr>
-                                    <td class="px-4 py-3 text-sm text-gray-800">{{ $student->full_name }}</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600 font-mono">{{ $student->username }}</td>
-                                    <td class="px-4 py-3">
-                                        @if ($student->is_active)
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
-                                        @else
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactive</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        </div>
-
-        <div class="mt-6 text-center">
-            <a href="{{ route('teacher.classrooms.index') }}" class="text-sm text-blue-600 hover:text-blue-800">&larr; Back to Classrooms</a>
         </div>
     </div>
-</body>
-</html>
+
+    @if (session('success'))
+        <div class="mb-6 flex items-center gap-3 rounded-lg border border-brand/20 bg-brand/5 px-5 py-3">
+            <svg class="h-5 w-5 shrink-0 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-sm font-medium text-brand">{{ session('success') }}</p>
+        </div>
+    @endif
+
+    {{-- Room Code Card --}}
+    <div class="mb-8 rounded-lg bg-surface-card p-6">
+        <p class="text-xs font-semibold uppercase tracking-widest text-text-muted">Room Code</p>
+        <p class="mt-2 font-mono text-4xl font-bold tracking-[0.3em] text-brand">{{ $classroom->room_code }}</p>
+        <p class="mt-2 text-xs text-text-muted">Share this code with students to join this classroom.</p>
+    </div>
+
+    {{-- Students Table --}}
+    <div class="rounded-lg bg-surface-card">
+        <div class="border-b border-border-subtle px-5 py-4">
+            <h2 class="text-sm font-bold text-text-primary">Students ({{ $classroom->students->count() }})</h2>
+        </div>
+
+        @if ($classroom->students->isEmpty())
+            <div class="p-8 text-center">
+                <p class="text-sm text-text-muted">No students have joined this classroom yet.</p>
+            </div>
+        @else
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-border-subtle">
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">Name</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">Username</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">Grade</th>
+                        <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">Section</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border-subtle">
+                    @foreach ($classroom->students as $student)
+                        <tr class="transition-colors hover:bg-surface-hover">
+                            <td class="whitespace-nowrap px-5 py-3.5 text-sm font-medium text-text-primary">{{ $student->full_name }}</td>
+                            <td class="whitespace-nowrap px-5 py-3.5 font-mono text-sm text-text-secondary">{{ $student->username }}</td>
+                            <td class="whitespace-nowrap px-5 py-3.5 text-sm text-text-secondary">{{ $student->grade ?? '—' }}</td>
+                            <td class="whitespace-nowrap px-5 py-3.5 text-sm text-text-secondary">{{ $student->section ?? '—' }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    </div>
+@endsection

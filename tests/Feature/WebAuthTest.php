@@ -9,7 +9,7 @@ test('login page renders successfully', function (): void {
         ->assertOk()
         ->assertViewIs('auth.login')
         ->assertSee('NutriMind')
-        ->assertSee('Teacher & Admin Portal', false);
+        ->assertSee('Sign in to your account', false);
 });
 
 test('teacher can login and is redirected to teacher class page', function (): void {

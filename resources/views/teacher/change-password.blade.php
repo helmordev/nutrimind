@@ -3,73 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriMind - Change Password</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Change Password - NutriMind</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-    <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h1 class="text-2xl font-bold text-center text-gray-800 mb-4">Change Your Password</h1>
-        <p class="text-center text-sm text-gray-500 mb-8">You must update your temporary password before continuing.</p>
+<body class="flex min-h-screen items-center justify-center bg-surface-base">
+    <div class="w-full max-w-sm px-4">
+        {{-- Brand --}}
+        <div class="mb-8 text-center">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand">
+                <svg class="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563a6 6 0 1111.162-8.279z"/></svg>
+            </div>
+            <h1 class="mt-4 text-xl font-bold text-text-primary">Change Your Password</h1>
+            <p class="mt-1 text-sm text-text-secondary">You must change your temporary password before continuing.</p>
+        </div>
 
+        {{-- Error Messages --}}
         @if ($errors->any())
-            <div class="mb-4 rounded-md border border-red-200 bg-red-50 p-4">
+            <div class="mb-5 rounded-lg border border-negative/20 bg-negative/5 px-4 py-3">
                 @foreach ($errors->all() as $error)
-                    <p class="text-sm text-red-600">{{ $error }}</p>
+                    <p class="text-xs text-negative">{{ $error }}</p>
                 @endforeach
             </div>
         @endif
 
-        <form method="POST" action="{{ route('teacher.password.update') }}">
-            @csrf
+        {{-- Form --}}
+        <div class="rounded-lg bg-surface-card p-6">
+            <form method="POST" action="{{ route('teacher.password.update') }}" class="space-y-5">
+                @csrf
 
-            <div class="mb-4">
-                <label for="current_password" class="mb-1 block text-sm font-medium text-gray-700">Current Password</label>
-                <input
-                    type="password"
-                    id="current_password"
-                    name="current_password"
-                    required
-                    class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter your current password"
-                />
-            </div>
+                {{-- Current Password --}}
+                <div>
+                    <label for="current_password" class="mb-1.5 block text-sm font-medium text-text-secondary">Current Password</label>
+                    <input type="password" name="current_password" id="current_password" required
+                        class="w-full rounded-md border border-border-default bg-surface-elevated px-3 py-2.5 text-sm text-text-primary placeholder-text-muted outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand">
+                </div>
 
-            <div class="mb-4">
-                <label for="password" class="mb-1 block text-sm font-medium text-gray-700">New Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    required
-                    class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Enter a new password"
-                />
-            </div>
+                {{-- New Password --}}
+                <div>
+                    <label for="password" class="mb-1.5 block text-sm font-medium text-text-secondary">New Password</label>
+                    <input type="password" name="password" id="password" required
+                        class="w-full rounded-md border border-border-default bg-surface-elevated px-3 py-2.5 text-sm text-text-primary placeholder-text-muted outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand">
+                    <p class="mt-1 text-xs text-text-muted">Minimum 8 characters.</p>
+                </div>
 
-            <div class="mb-6">
-                <label for="password_confirmation" class="mb-1 block text-sm font-medium text-gray-700">Confirm New Password</label>
-                <input
-                    type="password"
-                    id="password_confirmation"
-                    name="password_confirmation"
-                    required
-                    class="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Confirm your new password"
-                />
-            </div>
+                {{-- Confirm Password --}}
+                <div>
+                    <label for="password_confirmation" class="mb-1.5 block text-sm font-medium text-text-secondary">Confirm New Password</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation" required
+                        class="w-full rounded-md border border-border-default bg-surface-elevated px-3 py-2.5 text-sm text-text-primary placeholder-text-muted outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand">
+                </div>
 
-            <button
-                type="submit"
-                class="w-full rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-                Update Password
-            </button>
-        </form>
-
-        <form method="POST" action="{{ route('logout') }}" class="mt-4">
-            @csrf
-            <button type="submit" class="w-full text-sm text-red-600 hover:text-red-800">Logout</button>
-        </form>
+                {{-- Submit --}}
+                <button type="submit"
+                    class="w-full rounded-full bg-brand px-6 py-2.5 text-sm font-bold uppercase tracking-widest text-black transition-colors hover:bg-brand-dark">
+                    Change Password
+                </button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

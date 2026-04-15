@@ -11,7 +11,7 @@ test('admin can view the create teacher page', function (): void {
     $this->actingAs($admin)
         ->get('/admin/teachers/create')
         ->assertOk()
-        ->assertSee('Create Teacher Account');
+        ->assertSee('Create Teacher');
 });
 
 test('non-admin cannot view the create teacher page', function (): void {
@@ -182,5 +182,5 @@ test('admin dashboard page renders successfully', function (): void {
     $this->actingAs($admin)
         ->get('/admin/dashboard')
         ->assertOk()
-        ->assertSee('Admin Dashboard');
+        ->assertSee('Dashboard');
 });

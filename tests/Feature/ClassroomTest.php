@@ -239,7 +239,7 @@ test('classroom show displays empty state when no students', function (): void {
     $response = $this->actingAs($teacher)->get(route('teacher.classrooms.show', $classroom));
 
     $response->assertOk();
-    $response->assertSeeText('No students in this classroom yet');
+    $response->assertSeeText('No students have joined this classroom yet');
 });
 
 test('non-teacher is redirected from classroom show', function (): void {

@@ -11,4 +11,27 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+
+    /* Spotify-inspired dark theme palette */
+    --color-surface-base: #121212;
+    --color-surface-card: #181818;
+    --color-surface-elevated: #1f1f1f;
+    --color-surface-hover: #252525;
+    --color-surface-active: #2a2a2a;
+
+    --color-brand: #1ed760;
+    --color-brand-dark: #1db954;
+
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #b3b3b3;
+    --color-text-muted: #727272;
+
+    --color-border-subtle: #282828;
+    --color-border-default: #4d4d4d;
+    --color-border-strong: #7c7c7c;
+
+    --color-negative: #f3727f;
+    --color-warning: #ffa42b;
+    --color-info: #539df5;
+    --color-positive: #1ed760;
 }

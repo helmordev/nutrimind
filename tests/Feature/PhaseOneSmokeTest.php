@@ -30,7 +30,7 @@ test('phase 1 account chain works end to end', function (): void {
     $this->actingAs($admin)
         ->get('/admin/dashboard')
         ->assertOk()
-        ->assertSee('Admin Dashboard');
+        ->assertSee('Dashboard');
 
     $teacherCreate = $this->actingAs($admin)->post(route('admin.teachers.store'), [
         'full_name' => 'Phase One Teacher',
