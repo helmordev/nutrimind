@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\LogoutController;
 use App\Http\Controllers\Api\StudentLoginController;
+use App\Http\Controllers\Student\JoinRoomController;
 use App\Http\Controllers\Student\SyncController;
 use App\Http\Controllers\Student\WorldController;
 use Illuminate\Http\Request;
@@ -27,4 +28,5 @@ Route::prefix('v1')->group(function (): void {
 Route::middleware(['auth:sanctum', 'role.student'])->prefix('v1/student')->group(function (): void {
     Route::get('/worlds', [WorldController::class, 'index']);
     Route::get('/sync/state', SyncController::class);
+    Route::post('/join-room', JoinRoomController::class);
 });
