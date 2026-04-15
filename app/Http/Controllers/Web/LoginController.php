@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 final class LoginController
 {
@@ -29,35 +30,30 @@ final class LoginController
     {
         $validated = $request->validated();
 
-        if (! Auth::attempt($validated)) {
+        /** @var User|null $user */
+        $user = User::query()
+            ->where('username', $validated['username'])
+            ->first();
+
+        if (! $user instanceof User || ! Hash::check($validated['password'], $user->password)) {
             return back()
                 ->withErrors(['username' => 'The provided credentials are incorrect.'])
                 ->onlyInput('username');
         }
 
-        /** @var User $user */
-        $user = Auth::user();
-
         if (! $user->is_active) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
             return back()
                 ->withErrors(['username' => 'This account has been deactivated.'])
                 ->onlyInput('username');
         }
 
         if ($user->role === UserRole::Student) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
             return back()
                 ->withErrors(['username' => 'Students must log in through the mobile app.'])
                 ->onlyInput('username');
         }
 
+        Auth::login($user);
         $request->session()->regenerate();
 
         if ($user->role === UserRole::Teacher && $user->must_change_password) {

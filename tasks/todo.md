@@ -12,9 +12,9 @@
 - [completed] Test, format, and commit Task 15.
 - [completed] Complete Task 16: Postman Collection.
 - [completed] Test/review and commit Task 16.
-- [pending] Add solid browser test coverage under `tests/Browser/` for the account chain.
-- [pending] Complete Task 17: Smoke Test and end-to-end verification.
-- [pending] Test, document, and commit Task 17.
+- [completed] Add solid browser test coverage under `tests/Browser/` for the account chain.
+- [completed] Complete Task 17: Smoke Test and end-to-end verification.
+- [completed] Test, document, and commit Task 17.
 
 # Review
 
@@ -29,3 +29,6 @@
 - Verification for Task 15: `php artisan test --compact tests/Feature/TeacherDashboardTest.php tests/Feature/TeacherStudentTest.php tests/Feature/ClassroomTest.php tests/Feature/TeacherPasswordChangeTest.php tests/Feature/WebAuthTest.php` passed with 76 tests, and `vendor/bin/pint --dirty --format agent` passed.
 - Task 16 aligned student auth to `/api/v1/auth/*`, moved the protected user endpoint to `/api/v1/user`, and exported the full Phase 1 Postman collection to `docs/postman/NutriMind_API_v1.json` with example schemas for login, logout, worlds, and sync state.
 - Verification for Task 16: `php artisan test --compact tests/Feature/StudentAuthTest.php tests/Feature/SanctumAuthTest.php` passed with 27 tests, `vendor/bin/pint --dirty --format agent` passed, and the Postman JSON file parsed successfully.
+- Task 17 added a solid browser test for the admin login to teacher-create-form flow and a full Phase 1 smoke test that covers admin login, teacher creation, forced password change, student creation, student API login, worlds, sync state, role enforcement, and login rate limiting.
+- Task 17 also fixed web login rejection handling so inactive accounts and student web logins are rejected before session login, removing the `remember_token` logout exception from the application log.
+- Verification for Task 17: `php artisan migrate:fresh --seed --no-interaction` passed, `php artisan test --compact tests/Feature/WebAuthTest.php tests/Feature/AdminTeacherTest.php tests/Feature/AdminDashboardTest.php tests/Feature/TeacherPasswordChangeTest.php tests/Feature/TeacherStudentTest.php tests/Feature/ClassroomTest.php tests/Feature/TeacherDashboardTest.php tests/Feature/StudentAuthTest.php tests/Feature/SanctumAuthTest.php tests/Feature/StudentWorldApiTest.php tests/Feature/StudentSyncStateApiTest.php tests/Feature/PhaseOneSmokeTest.php tests/Browser/WelcomeTest.php` passed with 131 tests and 687 assertions, `vendor/bin/pint --dirty --format agent` passed, and `storage/logs/laravel.log` remained empty after the verification run.

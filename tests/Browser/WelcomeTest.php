@@ -2,8 +2,33 @@
 
 declare(strict_types=1);
 
-it('has login page', function (): void {
+use App\Models\User;
+
+it('lets an admin sign in and reach the teacher creation form in the browser', function (): void {
+    User::factory()->superAdmin()->create([
+        'username' => 'registrar',
+        'password' => 'password',
+        'full_name' => 'System Administrator',
+    ]);
+
     $page = visit('/login');
 
-    $page->assertSee('Teacher & Admin Portal');
+    $page->assertSee('Teacher & Admin Portal')
+        ->type('username', 'registrar')
+        ->type('password', 'password')
+        ->press('Sign In')
+        ->assertPathIs('/admin/dashboard')
+        ->assertSee('Admin Dashboard')
+        ->click('Create Teacher')
+        ->assertPathIs('/admin/teachers/create')
+        ->assertSee('Create Teacher Account')
+        ->assertSee('Full Name')
+        ->assertSee('Username')
+        ->assertSee('Grade')
+        ->assertSee('Section')
+        ->type('full_name', 'Browser Teacher')
+        ->type('username', 'browserteacher')
+        ->select('grade', '5')
+        ->type('section', 'Section B')
+        ->assertSee('Create Teacher Account');
 });
