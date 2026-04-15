@@ -11,6 +11,9 @@
     "require": {
         "php": "^8.5.0",
         "laravel/framework": "^13.5.0",
+        "laravel/sanctum": "^4.3",
+        "livewire/livewire": "^4.2",
+        "maatwebsite/excel": "^3.1",
         "nunomaduro/essentials": "^1.2.0"
     },
     "require-dev": {
