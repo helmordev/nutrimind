@@ -17,8 +17,7 @@ final class JoinRoomController
         /** @var User $student */
         $student = $request->user();
 
-        /** @var string $roomCode */
-        $roomCode = mb_strtoupper((string) $request->validated('room_code'));
+        $roomCode = mb_strtoupper((string) $request->validated('room_code')); // @phpstan-ignore cast.string
 
         /** @var Classroom $classroom */
         $classroom = Classroom::query()

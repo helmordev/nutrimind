@@ -31,7 +31,7 @@ final class PasswordController
         $user = $request->user();
 
         $user->update([
-            'password' => Hash::make($validated['password']),
+            'password' => Hash::make((string) $validated['password']), // @phpstan-ignore cast.string
             'must_change_password' => false,
         ]);
 

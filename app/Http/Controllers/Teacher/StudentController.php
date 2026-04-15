@@ -66,7 +66,7 @@ final class StudentController
             Subject::query()
                 ->where('grade', $student->grade)
                 ->pluck('id')
-                ->each(function (string $subjectId) use ($student): void {
+                ->each(function (mixed $subjectId) use ($student): void {
                     StudentDifficulty::query()->create([
                         'student_id' => $student->id,
                         'subject_id' => $subjectId,

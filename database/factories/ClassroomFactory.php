@@ -18,7 +18,9 @@ final class ClassroomFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var int $grade */
         $grade = fake()->randomElement([5, 6]);
+        /** @var string $section */
         $section = fake()->randomElement(['A', 'B', 'C', 'D']);
 
         return [

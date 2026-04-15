@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,14 +17,17 @@ final class WorldResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        /** @var Subject $subject */
+        $subject = $this->resource;
+
         return [
-            'id' => $this->resource->id,
-            'name' => $this->resource->name,
-            'grade' => $this->resource->grade,
-            'world_theme' => $this->resource->world_theme,
-            'color_hex' => $this->resource->color_hex,
-            'difficulty' => $this->resource->studentDifficulties->first()?->difficulty?->value,
-            'quarters' => QuarterResource::collection($this->resource->quarters),
+            'id' => $subject->id,
+            'name' => $subject->name,
+            'grade' => $subject->grade,
+            'world_theme' => $subject->world_theme,
+            'color_hex' => $subject->color_hex,
+            'difficulty' => $subject->studentDifficulties->first()?->difficulty?->value,
+            'quarters' => QuarterResource::collection($subject->quarters),
         ];
     }
 }

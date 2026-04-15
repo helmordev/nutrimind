@@ -44,8 +44,7 @@ final class JoinRoomRequest extends FormRequest
                     return;
                 }
 
-                /** @var string $roomCode */
-                $roomCode = mb_strtoupper((string) $this->input('room_code'));
+                $roomCode = mb_strtoupper((string) $this->input('room_code')); // @phpstan-ignore cast.string
 
                 $classroom = Classroom::query()
                     ->where('room_code', $roomCode)

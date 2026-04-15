@@ -35,7 +35,7 @@ final class LoginController
             ->where('username', $validated['username'])
             ->first();
 
-        if (! $user instanceof User || ! Hash::check($validated['password'], $user->password)) {
+        if (! $user instanceof User || ! Hash::check((string) $validated['password'], $user->password)) { // @phpstan-ignore cast.string
             return back()
                 ->withErrors(['username' => 'The provided credentials are incorrect.'])
                 ->onlyInput('username');

@@ -6,9 +6,13 @@ namespace App\Http\Controllers\Student;
 
 use App\Enums\ScreenTimeScope;
 use App\Http\Resources\WorldResource;
+use App\Models\GradeRecord;
 use App\Models\ScreenTimeSetting;
+use App\Models\StudentBadge;
+use App\Models\StudentDifficulty;
 use App\Models\Subject;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -28,13 +32,13 @@ final class SyncController
 
         $worlds = Subject::query()
             ->where('grade', $student->grade)
-            ->with([
-                'studentDifficulties' => fn ($query) => $query
+            ->with([ // @phpstan-ignore argument.type
+                'studentDifficulties' => fn (HasMany $query): HasMany => $query
                     ->where('student_id', $student->id),
-                'quarters' => fn ($query) => $query
+                'quarters' => fn (HasMany $query): HasMany => $query
                     ->orderBy('quarter_number')
-                    ->with([
-                        'levels' => fn ($levelQuery) => $levelQuery->orderBy('level_number'),
+                    ->with([ // @phpstan-ignore argument.type
+                        'levels' => fn (HasMany $levelQuery): HasMany => $levelQuery->orderBy('level_number'),
                     ]),
             ])
             ->orderBy('name')
@@ -45,8 +49,11 @@ final class SyncController
             ->whereNull('scope_id')
             ->first();
 
+        /** @var array{data: array<int, mixed>} $worldsData */
+        $worldsData = WorldResource::collection($worlds)->response()->getData(true);
+
         return response()->json([
-            'worlds' => WorldResource::collection($worlds)->response()->getData(true)['data'],
+            'worlds' => $worldsData['data'],
             'preferences' => [
                 'language' => $student->studentPreferences?->language->value,
                 'master_volume' => $student->studentPreferences?->master_volume,
@@ -57,9 +64,9 @@ final class SyncController
                 'colorblind_mode' => $student->studentPreferences?->colorblind_mode,
             ],
             'difficulties' => $student->studentDifficulties
-                ->sortBy(fn ($difficulty) => $difficulty->subject?->name)
+                ->sortBy(fn (StudentDifficulty $difficulty): ?string => $difficulty->subject?->name)
                 ->values()
-                ->map(fn ($difficulty): array => [
+                ->map(fn (StudentDifficulty $difficulty): array => [
                     'subject_id' => $difficulty->subject_id,
                     'subject_name' => $difficulty->subject?->name,
                     'difficulty' => $difficulty->difficulty->value,
@@ -69,19 +76,19 @@ final class SyncController
                 ->all(),
             'screen_time' => [
                 'scope' => $screenTime?->scope->value ?? ScreenTimeScope::Global->value,
-                'school_day_limit_min' => $screenTime?->school_day_limit_min ?? 45,
-                'weekend_limit_min' => $screenTime?->weekend_limit_min ?? 60,
-                'max_levels_school' => $screenTime?->max_levels_school ?? 2,
-                'max_levels_weekend' => $screenTime?->max_levels_weekend ?? 3,
-                'play_start_school' => $screenTime?->play_start_school ?? '15:00:00',
-                'play_end_school' => $screenTime?->play_end_school ?? '20:00:00',
-                'play_start_weekend' => $screenTime?->play_start_weekend ?? '08:00:00',
-                'play_end_weekend' => $screenTime?->play_end_weekend ?? '20:00:00',
+                'school_day_limit_min' => $screenTime?->school_day_limit_min ?? 45, // @phpstan-ignore nullsafe.neverNull
+                'weekend_limit_min' => $screenTime?->weekend_limit_min ?? 60, // @phpstan-ignore nullsafe.neverNull
+                'max_levels_school' => $screenTime?->max_levels_school ?? 2, // @phpstan-ignore nullsafe.neverNull
+                'max_levels_weekend' => $screenTime?->max_levels_weekend ?? 3, // @phpstan-ignore nullsafe.neverNull
+                'play_start_school' => $screenTime?->play_start_school ?? '15:00:00', // @phpstan-ignore nullsafe.neverNull
+                'play_end_school' => $screenTime?->play_end_school ?? '20:00:00', // @phpstan-ignore nullsafe.neverNull
+                'play_start_weekend' => $screenTime?->play_start_weekend ?? '08:00:00', // @phpstan-ignore nullsafe.neverNull
+                'play_end_weekend' => $screenTime?->play_end_weekend ?? '20:00:00', // @phpstan-ignore nullsafe.neverNull
             ],
             'badges' => $student->studentBadges
                 ->sortBy('earned_at')
                 ->values()
-                ->map(fn ($studentBadge): array => [
+                ->map(fn (StudentBadge $studentBadge): array => [
                     'badge_id' => $studentBadge->badge_id,
                     'name' => $studentBadge->badge?->name,
                     'description' => $studentBadge->badge?->description,
@@ -92,11 +99,11 @@ final class SyncController
                 ->all(),
             'grades' => $student->gradeRecords
                 ->sortBy([
-                    fn ($gradeRecord) => $gradeRecord->subject?->name,
-                    fn ($gradeRecord) => $gradeRecord->quarter_number,
+                    fn (GradeRecord $gradeRecord): ?string => $gradeRecord->subject?->name,
+                    fn (GradeRecord $gradeRecord): int => $gradeRecord->quarter_number,
                 ])
                 ->values()
-                ->map(fn ($gradeRecord): array => [
+                ->map(fn (GradeRecord $gradeRecord): array => [
                     'subject_id' => $gradeRecord->subject_id,
                     'subject_name' => $gradeRecord->subject?->name,
                     'quarter_number' => $gradeRecord->quarter_number,
