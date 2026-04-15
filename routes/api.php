@@ -14,3 +14,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('/user', fn (Request $request) => $request->user());
     Route::post('/logout', LogoutController::class);
 });
+
+Route::middleware(['auth:sanctum', 'role.student'])->prefix('v1/student')->group(function (): void {
+    // Student API routes will be added in later tasks
+});
