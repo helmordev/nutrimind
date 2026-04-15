@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 final class ScreenTimeLog extends Model
 {
     use HasFactory;
-    use HasFactory;
     use HasUuids;
 
     /**

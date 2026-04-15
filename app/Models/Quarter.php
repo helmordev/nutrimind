@@ -31,7 +31,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 final class Quarter extends Model
 {
     use HasFactory;
-    use HasFactory;
     use HasUuids;
 
     /**

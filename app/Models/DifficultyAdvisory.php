@@ -37,7 +37,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 final class DifficultyAdvisory extends Model
 {
     use HasFactory;
-    use HasFactory;
     use HasUuids;
 
     /**

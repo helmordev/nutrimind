@@ -28,6 +28,5 @@ use Illuminate\Database\Eloquent\Model;
 final class Badge extends Model
 {
     use HasFactory;
-    use HasFactory;
     use HasUuids;
 }

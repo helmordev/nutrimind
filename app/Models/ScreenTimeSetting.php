@@ -41,7 +41,6 @@ use Illuminate\Database\Eloquent\Model;
 final class ScreenTimeSetting extends Model
 {
     use HasFactory;
-    use HasFactory;
     use HasUuids;
 
     /**

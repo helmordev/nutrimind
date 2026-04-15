@@ -33,7 +33,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 final class AtRiskAlert extends Model
 {
     use HasFactory;
-    use HasFactory;
     use HasUuids;
 
     /**

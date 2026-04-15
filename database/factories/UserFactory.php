@@ -23,7 +23,7 @@ final class UserFactory extends Factory
             'full_name' => fake()->name(),
             'username' => fake()->unique()->userName(),
             'password' => 'password',
-            'grade' => fake()->numberBetween(1, 6),
+            'grade' => fake()->randomElement([5, 6]),
             'section' => fake()->randomElement(['A', 'B', 'C']),
             'is_active' => true,
             'must_change_password' => false,
@@ -34,7 +34,7 @@ final class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes): array => [
             'role' => UserRole::Student,
-            'grade' => fake()->numberBetween(1, 6),
+            'grade' => fake()->randomElement([5, 6]),
             'section' => fake()->randomElement(['A', 'B', 'C']),
         ]);
     }

@@ -34,7 +34,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 final class Level extends Model
 {
     use HasFactory;
-    use HasFactory;
     use HasUuids;
 
     /**
