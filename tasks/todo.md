@@ -4,8 +4,8 @@
 - [completed] Commit verified Task 11 forced password flow.
 - [completed] Complete Task 12: Student API - Worlds Endpoint.
 - [completed] Test, format, and commit Task 12.
-- [pending] Complete Task 13: Student API - Sync State Endpoint.
-- [pending] Test, format, and commit Task 13.
+- [completed] Complete Task 13: Student API - Sync State Endpoint.
+- [completed] Test, format, and commit Task 13.
 - [pending] Complete Task 14: Basic Admin Dashboard.
 - [pending] Test, format, and commit Task 14.
 - [pending] Complete Task 15: Basic Teacher Dashboard.
@@ -21,3 +21,5 @@
 - Task 11 was committed as `aa7b58d` after targeted feature verification and Pint.
 - Task 12 added `GET /api/v1/student/worlds` with grade-filtered subject data, nested quarters/levels, unlock status, and per-subject student difficulty.
 - Verification for Task 12: `php artisan test --compact tests/Feature/StudentAuthTest.php tests/Feature/StudentWorldApiTest.php` passed with 16 tests, and `vendor/bin/pint --dirty --format agent` passed.
+- Task 13 added `GET /api/v1/student/sync/state`, seeded default student preferences and per-subject difficulties during teacher-created student setup, and returned combined worlds, preferences, difficulties, screen time, badges, and grades payloads.
+- Verification for Task 13: `php artisan test --compact tests/Feature/TeacherStudentTest.php tests/Feature/StudentAuthTest.php tests/Feature/StudentWorldApiTest.php tests/Feature/StudentSyncStateApiTest.php` passed with 40 tests, and `vendor/bin/pint --dirty --format agent` passed.

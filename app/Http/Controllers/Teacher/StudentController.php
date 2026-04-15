@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Enums\DifficultyLevel;
+use App\Enums\DifficultySetBy;
 use App\Enums\UserRole;
 use App\Http\Requests\Teacher\CreateStudentRequest;
+use App\Models\StudentDifficulty;
+use App\Models\StudentPreference;
 use App\Models\StudentProfile;
+use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -48,6 +53,22 @@ final class StudentController
                 'pin' => $pin,
                 'pin_generated_at' => now(),
             ]);
+
+            StudentPreference::create([
+                'user_id' => $student->id,
+            ]);
+
+            Subject::query()
+                ->where('grade', $student->grade)
+                ->pluck('id')
+                ->each(function (string $subjectId) use ($student): void {
+                    StudentDifficulty::create([
+                        'student_id' => $student->id,
+                        'subject_id' => $subjectId,
+                        'difficulty' => DifficultyLevel::Standard,
+                        'set_by' => DifficultySetBy::System,
+                    ]);
+                });
 
             return $student;
         });

@@ -116,6 +116,38 @@ final class User extends Authenticatable
         return $this->hasOne(StudentProfile::class, 'user_id');
     }
 
+    /**
+     * @return HasOne<StudentPreference, $this>
+     */
+    public function studentPreferences(): HasOne
+    {
+        return $this->hasOne(StudentPreference::class, 'user_id');
+    }
+
+    /**
+     * @return HasMany<StudentDifficulty, $this>
+     */
+    public function studentDifficulties(): HasMany
+    {
+        return $this->hasMany(StudentDifficulty::class, 'student_id');
+    }
+
+    /**
+     * @return HasMany<StudentBadge, $this>
+     */
+    public function studentBadges(): HasMany
+    {
+        return $this->hasMany(StudentBadge::class, 'student_id');
+    }
+
+    /**
+     * @return HasMany<GradeRecord, $this>
+     */
+    public function gradeRecords(): HasMany
+    {
+        return $this->hasMany(GradeRecord::class, 'student_id');
+    }
+
     public function isStudent(): bool
     {
         return $this->role === UserRole::Student;
