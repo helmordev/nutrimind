@@ -10,8 +10,8 @@
 - [completed] Test, format, and commit Task 14.
 - [completed] Complete Task 15: Basic Teacher Dashboard.
 - [completed] Test, format, and commit Task 15.
-- [pending] Complete Task 16: Postman Collection.
-- [pending] Test/review and commit Task 16.
+- [completed] Complete Task 16: Postman Collection.
+- [completed] Test/review and commit Task 16.
 - [pending] Add solid browser test coverage under `tests/Browser/` for the account chain.
 - [pending] Complete Task 17: Smoke Test and end-to-end verification.
 - [pending] Test, document, and commit Task 17.
@@ -27,3 +27,5 @@
 - Verification for Task 14: `php artisan test --compact tests/Feature/AdminDashboardTest.php tests/Feature/AdminTeacherTest.php tests/Feature/WebAuthTest.php` passed with 34 tests, and `vendor/bin/pint --dirty --format agent` passed.
 - Task 15 added the planned teacher layout and `/teacher/class` landing page, showed each teacher's student list with LRN/grade/section, and kept `/teacher/dashboard` and `/teacher/students` working as compatibility routes to the new class page.
 - Verification for Task 15: `php artisan test --compact tests/Feature/TeacherDashboardTest.php tests/Feature/TeacherStudentTest.php tests/Feature/ClassroomTest.php tests/Feature/TeacherPasswordChangeTest.php tests/Feature/WebAuthTest.php` passed with 76 tests, and `vendor/bin/pint --dirty --format agent` passed.
+- Task 16 aligned student auth to `/api/v1/auth/*`, moved the protected user endpoint to `/api/v1/user`, and exported the full Phase 1 Postman collection to `docs/postman/NutriMind_API_v1.json` with example schemas for login, logout, worlds, and sync state.
+- Verification for Task 16: `php artisan test --compact tests/Feature/StudentAuthTest.php tests/Feature/SanctumAuthTest.php` passed with 27 tests, `vendor/bin/pint --dirty --format agent` passed, and the Postman JSON file parsed successfully.

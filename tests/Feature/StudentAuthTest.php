@@ -13,7 +13,7 @@ test('student can login with valid LRN and PIN', function (): void {
         'pin' => '123456',
     ]);
 
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '123456',
     ])
@@ -39,7 +39,7 @@ test('login updates last_login_at on student profile', function (): void {
         'last_login_at' => null,
     ]);
 
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '123456',
     ])->assertOk();
@@ -55,7 +55,7 @@ test('login returns a valid sanctum token', function (): void {
         'pin' => '123456',
     ]);
 
-    $response = $this->postJson('/api/student/login', [
+    $response = $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '123456',
     ])->assertOk();
@@ -63,7 +63,7 @@ test('login returns a valid sanctum token', function (): void {
     $token = $response->json('token');
 
     $this->withHeader('Authorization', 'Bearer '.$token)
-        ->getJson('/api/user')
+        ->getJson('/api/v1/user')
         ->assertOk()
         ->assertJsonFragment(['id' => $student->id]);
 });
@@ -76,7 +76,7 @@ test('login fails with incorrect PIN', function (): void {
         'pin' => '123456',
     ]);
 
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '000000',
     ])
@@ -85,7 +85,7 @@ test('login fails with incorrect PIN', function (): void {
 });
 
 test('login fails with non-existent LRN', function (): void {
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '999999999999',
         'pin' => '123456',
     ])
@@ -101,7 +101,7 @@ test('login fails when student account is inactive', function (): void {
         'pin' => '123456',
     ]);
 
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '123456',
     ])
@@ -110,7 +110,7 @@ test('login fails when student account is inactive', function (): void {
 });
 
 test('login validates LRN is required', function (): void {
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'pin' => '123456',
     ])
         ->assertUnprocessable()
@@ -118,7 +118,7 @@ test('login validates LRN is required', function (): void {
 });
 
 test('login validates PIN is required', function (): void {
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
     ])
         ->assertUnprocessable()
@@ -126,7 +126,7 @@ test('login validates PIN is required', function (): void {
 });
 
 test('login validates LRN must be exactly 12 characters', function (): void {
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '12345',
         'pin' => '123456',
     ])
@@ -135,7 +135,7 @@ test('login validates LRN must be exactly 12 characters', function (): void {
 });
 
 test('login validates PIN must be exactly 6 characters', function (): void {
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '123',
     ])
@@ -151,7 +151,7 @@ test('authenticated student can logout', function (): void {
         'pin' => '123456',
     ]);
 
-    $response = $this->postJson('/api/student/login', [
+    $response = $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '123456',
     ])->assertOk();
@@ -159,7 +159,7 @@ test('authenticated student can logout', function (): void {
     $token = $response->json('token');
 
     $this->withHeader('Authorization', 'Bearer '.$token)
-        ->postJson('/api/logout')
+        ->postJson('/api/v1/auth/logout')
         ->assertOk()
         ->assertJsonFragment(['message' => 'Logged out successfully.']);
 
@@ -167,7 +167,7 @@ test('authenticated student can logout', function (): void {
 });
 
 test('unauthenticated logout returns 401', function (): void {
-    $this->postJson('/api/logout')
+    $this->postJson('/api/v1/auth/logout')
         ->assertUnauthorized();
 });
 
@@ -179,7 +179,7 @@ test('login response includes must_change_password flag', function (): void {
         'pin' => '123456',
     ]);
 
-    $this->postJson('/api/student/login', [
+    $this->postJson('/api/v1/auth/login', [
         'lrn' => '123456789012',
         'pin' => '123456',
     ])

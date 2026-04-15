@@ -3,17 +3,18 @@
 declare(strict_types=1);
 
 use App\Models\User;
-use Laravel\Sanctum\Sanctum;
 
 test('unauthenticated request to protected route returns 401', function (): void {
-    $this->getJson('/api/user')
+    $this->getJson('/api/v1/user')
         ->assertUnauthorized();
 });
 
 test('authenticated user can access protected route', function (): void {
-    Sanctum::actingAs(User::factory()->create());
+    $user = User::factory()->create();
+    $token = $user->createToken('test-device')->plainTextToken;
 
-    $this->getJson('/api/user')
+    $this->withHeader('Authorization', 'Bearer '.$token)
+        ->getJson('/api/v1/user')
         ->assertOk();
 });
 
@@ -41,7 +42,7 @@ test('token can authenticate API requests', function (): void {
     $token = $user->createToken('test-device');
 
     $this->withHeader('Authorization', 'Bearer '.$token->plainTextToken)
-        ->getJson('/api/user')
+        ->getJson('/api/v1/user')
         ->assertOk()
         ->assertJsonFragment(['id' => $user->id]);
 });
@@ -55,7 +56,7 @@ test('revoked token cannot authenticate', function (): void {
     $user->tokens()->delete();
 
     $this->withHeader('Authorization', 'Bearer '.$plainToken)
-        ->getJson('/api/user')
+        ->getJson('/api/v1/user')
         ->assertUnauthorized();
 });
 
@@ -80,39 +81,45 @@ test('revoking specific token does not affect others', function (): void {
 
     // Phone token should fail
     $this->withHeader('Authorization', 'Bearer '.$phoneToken->plainTextToken)
-        ->getJson('/api/user')
+        ->getJson('/api/v1/user')
         ->assertUnauthorized();
 
     // Tablet token should still work
     $this->withHeader('Authorization', 'Bearer '.$tabletToken->plainTextToken)
-        ->getJson('/api/user')
+        ->getJson('/api/v1/user')
         ->assertOk();
 });
 
 test('invalid token returns 401', function (): void {
     $this->withHeader('Authorization', 'Bearer invalid-token-string')
-        ->getJson('/api/user')
+        ->getJson('/api/v1/user')
         ->assertUnauthorized();
 });
 
 test('teacher can authenticate via token', function (): void {
-    Sanctum::actingAs(User::factory()->teacher()->create());
+    $teacher = User::factory()->teacher()->create();
+    $token = $teacher->createToken('teacher-device')->plainTextToken;
 
-    $this->getJson('/api/user')
+    $this->withHeader('Authorization', 'Bearer '.$token)
+        ->getJson('/api/v1/user')
         ->assertOk();
 });
 
 test('super admin can authenticate via token', function (): void {
-    Sanctum::actingAs(User::factory()->superAdmin()->create());
+    $admin = User::factory()->superAdmin()->create();
+    $token = $admin->createToken('admin-device')->plainTextToken;
 
-    $this->getJson('/api/user')
+    $this->withHeader('Authorization', 'Bearer '.$token)
+        ->getJson('/api/v1/user')
         ->assertOk();
 });
 
 test('inactive user can still authenticate via token', function (): void {
-    Sanctum::actingAs(User::factory()->inactive()->create());
+    $user = User::factory()->inactive()->create();
+    $token = $user->createToken('inactive-device')->plainTextToken;
 
-    $this->getJson('/api/user')
+    $this->withHeader('Authorization', 'Bearer '.$token)
+        ->getJson('/api/v1/user')
         ->assertOk();
 });
 
@@ -125,10 +132,10 @@ test('sanctum token expiration is configured', function (): void {
 
 test('user endpoint returns correct user data', function (): void {
     $user = User::factory()->create();
+    $token = $user->createToken('profile-device')->plainTextToken;
 
-    Sanctum::actingAs($user);
-
-    $this->getJson('/api/user')
+    $this->withHeader('Authorization', 'Bearer '.$token)
+        ->getJson('/api/v1/user')
         ->assertOk()
         ->assertJsonFragment([
             'id' => $user->id,

@@ -1,0 +1,380 @@
+{
+  "info": {
+    "_postman_id": "6e9c2dd8-3c18-4b7d-9ae0-2dc11d4c7d11",
+    "name": "NutriMind API v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Phase 1 API collection for NutriMind. Includes student mobile authentication and the student worlds/sync endpoints. Collection variables: base_url, student_token, admin_session."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "student_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_session",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Student Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lrn\": \"123456789012\",\n  \"pin\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Authenticate a student using LRN + 6-digit PIN. Save the returned token into {{student_token}} for the protected student endpoints."
+          },
+          "response": [
+            {
+              "name": "200 Login Successful",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lrn\": \"123456789012\",\n  \"pin\": \"123456\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/auth/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Login successful.\",\n  \"token\": \"1|sample-student-token\",\n  \"student\": {\n    \"id\": \"8f0d0f3f-1d56-4edb-9347-a5938e6f6c26\",\n    \"full_name\": \"Maria Santos\",\n    \"grade\": 5,\n    \"section\": \"A\",\n    \"must_change_password\": true\n  }\n}"
+            },
+            {
+              "name": "422 Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lrn\": \"12345\",\n  \"pin\": \"123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/auth/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Unprocessable Content",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"The lrn field must be 12 characters. (and 1 more error)\",\n  \"errors\": {\n    \"lrn\": [\n      \"The lrn field must be 12 characters.\"\n    ],\n    \"pin\": [\n      \"The pin field must be 6 characters.\"\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Student Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Revoke the currently authenticated student API token."
+          },
+          "response": [
+            {
+              "name": "200 Logout Successful",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{student_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/auth/logout",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Logged out successfully.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Student",
+      "item": [
+        {
+          "name": "Get Worlds",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/student/worlds",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "student",
+                "worlds"
+              ]
+            },
+            "description": "Fetch the authenticated student's grade-specific worlds, quarters, level unlock states, and current per-subject difficulty settings."
+          },
+          "response": [
+            {
+              "name": "200 Worlds Payload",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{student_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/student/worlds",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "student",
+                    "worlds"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"2de2aa53-4d5e-4f34-9b89-49f1c52a9ed2\",\n      \"name\": \"English\",\n      \"grade\": 5,\n      \"world_theme\": \"Word Forest\",\n      \"color_hex\": \"#3B82F6\",\n      \"difficulty\": \"standard\",\n      \"quarters\": [\n        {\n          \"id\": \"9bfa27bb-f469-4f5d-afc5-2f52868bb53e\",\n          \"quarter_number\": 1,\n          \"current_unlock_week\": 2,\n          \"is_globally_unlocked\": false,\n          \"levels\": [\n            {\n              \"id\": \"19ad95db-7080-4f12-a08e-4b9c6d4df9c1\",\n              \"level_number\": 1,\n              \"title\": \"Vocabulary Trail\",\n              \"unlock_week\": 1,\n              \"is_unlocked\": true\n            },\n            {\n              \"id\": \"ee1f9634-5da5-4e9c-b26f-374d48048584\",\n              \"level_number\": 3,\n              \"title\": \"Reading Ridge\",\n              \"unlock_week\": 3,\n              \"is_unlocked\": false\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Sync State",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{student_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/student/sync/state",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "student",
+                "sync",
+                "state"
+              ]
+            },
+            "description": "Fetch the authenticated student's full mobile bootstrap payload: worlds, preferences, difficulties, screen time, earned badges, and grades."
+          },
+          "response": [
+            {
+              "name": "200 Sync State Payload",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{student_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/student/sync/state",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v1",
+                    "student",
+                    "sync",
+                    "state"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"worlds\": [\n    {\n      \"id\": \"2de2aa53-4d5e-4f34-9b89-49f1c52a9ed2\",\n      \"name\": \"English\",\n      \"grade\": 5,\n      \"world_theme\": \"Word Forest\",\n      \"color_hex\": \"#3B82F6\",\n      \"difficulty\": \"hard\",\n      \"quarters\": []\n    }\n  ],\n  \"preferences\": {\n    \"language\": \"filipino\",\n    \"master_volume\": 60,\n    \"bgm_volume\": 50,\n    \"sfx_volume\": 40,\n    \"tts_enabled\": false,\n    \"text_size\": \"large\",\n    \"colorblind_mode\": true\n  },\n  \"difficulties\": [\n    {\n      \"subject_id\": \"2de2aa53-4d5e-4f34-9b89-49f1c52a9ed2\",\n      \"subject_name\": \"English\",\n      \"difficulty\": \"hard\",\n      \"set_by\": \"teacher\",\n      \"updated_at_by_teacher\": \"2026-04-15T00:00:00.000000Z\"\n    }\n  ],\n  \"screen_time\": {\n    \"scope\": \"global\",\n    \"school_day_limit_min\": 45,\n    \"weekend_limit_min\": 90,\n    \"max_levels_school\": 3,\n    \"max_levels_weekend\": 6,\n    \"play_start_school\": \"15:00\",\n    \"play_end_school\": \"19:00\",\n    \"play_start_weekend\": \"08:00\",\n    \"play_end_weekend\": \"20:00\"\n  },\n  \"badges\": [\n    {\n      \"badge_id\": \"a5652b63-203d-45da-a49c-f22ae703f9b8\",\n      \"name\": \"First Login\",\n      \"description\": \"Logged into the game for the first time.\",\n      \"icon\": \"badge-first-login\",\n      \"trigger_type\": \"first_login\",\n      \"earned_at\": \"2026-04-15T00:00:00.000000Z\"\n    }\n  ],\n  \"grades\": [\n    {\n      \"subject_id\": \"2de2aa53-4d5e-4f34-9b89-49f1c52a9ed2\",\n      \"subject_name\": \"English\",\n      \"quarter_number\": 1,\n      \"written_work\": 92,\n      \"performance_task\": 94,\n      \"quarterly_assessment\": 91,\n      \"final_grade\": 92.5,\n      \"computed_at\": \"2026-04-15T00:00:00.000000Z\"\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
