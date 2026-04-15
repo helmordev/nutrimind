@@ -91,7 +91,7 @@ test('subjects have correct world themes and colors per grade', function (): voi
 test('each subject has a unique name-grade combination', function (): void {
     $this->seed(SubjectSeeder::class);
 
-    $combinations = Subject::all()->map(fn (Subject $s): string => "{$s->name}-{$s->grade}")->all();
+    $combinations = Subject::all()->map(fn (Subject $s): string => sprintf('%s-%d', $s->name, $s->grade))->all();
 
     expect($combinations)->toHaveCount(6)
         ->and(array_unique($combinations))->toHaveCount(6);

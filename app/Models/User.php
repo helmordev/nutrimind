@@ -19,7 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property-read string $id
- * @property string $role
+ * @property UserRole $role
  * @property string $full_name
  * @property string $username
  * @property string $password

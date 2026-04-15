@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Enums\UserRole;
 use App\Http\Requests\WebLoginRequest;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ final class LoginController
                 ->onlyInput('username');
         }
 
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = Auth::user();
 
         if (! $user->is_active) {
@@ -61,8 +62,7 @@ final class LoginController
 
         return match ($user->role) {
             UserRole::SuperAdmin => redirect()->intended('/admin/dashboard'),
-            UserRole::Teacher => redirect()->intended('/teacher/class'),
-            default => redirect()->intended('/'),
+            default => redirect()->intended('/teacher/class'),
         };
     }
 

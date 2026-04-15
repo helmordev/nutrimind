@@ -18,12 +18,8 @@ final class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        RateLimiter::for('student-login', function (Request $request): Limit {
-            return Limit::perMinute(5)->by($request->ip());
-        });
+        RateLimiter::for('student-login', fn (Request $request): Limit => Limit::perMinute(5)->by($request->ip()));
 
-        RateLimiter::for('web-login', function (Request $request): Limit {
-            return Limit::perMinute(5)->by($request->ip());
-        });
+        RateLimiter::for('web-login', fn (Request $request): Limit => Limit::perMinute(5)->by($request->ip()));
     }
 }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StudentLoginRequest;
 use App\Models\StudentProfile;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +15,10 @@ final class StudentLoginController
 {
     public function __invoke(StudentLoginRequest $request): JsonResponse
     {
+        /** @var array{lrn: string, pin: string} $validated */
         $validated = $request->validated();
 
-        $profile = StudentProfile::where('lrn', $validated['lrn'])->first();
+        $profile = StudentProfile::query()->where('lrn', $validated['lrn'])->first();
 
         if (! $profile || ! Hash::check($validated['pin'], $profile->pin)) {
             return response()->json([
@@ -24,6 +26,7 @@ final class StudentLoginController
             ], Response::HTTP_UNAUTHORIZED);
         }
 
+        /** @var User $student */
         $student = $profile->student;
 
         if (! $student->is_active) {

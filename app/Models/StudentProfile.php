@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonInterface;
+use Database\Factories\StudentProfileFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,7 +31,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 final class StudentProfile extends Model
 {
+    /** @use HasFactory<StudentProfileFactory> */
     use HasFactory;
+
     use HasUuids;
 
     /**

@@ -6,9 +6,13 @@ use App\Http\Middleware\EnsureIsStudent;
 use App\Http\Middleware\EnsureIsSuperAdmin;
 use App\Http\Middleware\EnsureIsTeacher;
 use App\Models\User;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 beforeEach(function (): void {
     Route::middleware(['auth:sanctum', EnsureIsStudent::class])
@@ -21,10 +25,10 @@ beforeEach(function (): void {
         ->get('/test/admin-only', fn () => response()->json(['ok' => true]));
 
     Route::middleware(['auth', EnsureIsTeacher::class])
-        ->get('/test/teacher-web', fn () => view('auth.login'));
+        ->get('/test/teacher-web', fn (): Factory|View => view('auth.login'));
 
     Route::middleware(['auth', EnsureIsSuperAdmin::class])
-        ->get('/test/admin-web', fn () => view('auth.login'));
+        ->get('/test/admin-web', fn (): Factory|View => view('auth.login'));
 });
 
 // ── EnsureIsStudent ─────────────────────────────────────────────
@@ -156,8 +160,8 @@ test('unauthenticated user accessing admin web route gets redirected to login', 
 // ── Middleware aliases are registered ───────────────────────────
 
 test('role middleware aliases are registered in the application', function (): void {
-    /** @var Illuminate\Routing\Router $router */
-    $router = app('router');
+    /** @var Router $router */
+    $router = resolve(Router::class);
     $aliases = $router->getMiddleware();
 
     expect($aliases)

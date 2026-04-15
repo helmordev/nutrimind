@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Enums\UserRole;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +22,10 @@ final class EnsureIsStudent
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()?->role !== UserRole::Student) {
-            abort(403, 'This action requires a student account.');
-        }
+        /** @var User|null $user */
+        $user = $request->user();
+
+        abort_if($user?->role !== UserRole::Student, 403, 'This action requires a student account.');
 
         return $next($request);
     }

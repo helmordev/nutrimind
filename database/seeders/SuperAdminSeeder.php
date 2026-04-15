@@ -13,12 +13,13 @@ final class SuperAdminSeeder extends Seeder
 {
     public function run(): void
     {
+        /** @var string $adminPassword */
+        $adminPassword = config('app.admin_initial_password', 'password');
+
         User::query()->firstOrCreate(['username' => 'registrar'], [
             'role' => UserRole::SuperAdmin,
             'full_name' => 'System Administrator',
-            'password' => Hash::make(
-                (string) config('app.admin_initial_password', 'password'),
-            ),
+            'password' => Hash::make($adminPassword),
             'grade' => null,
             'section' => null,
             'teacher_id' => null,
