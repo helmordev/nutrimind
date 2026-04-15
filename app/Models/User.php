@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Carbon\CarbonInterface;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,6 +32,17 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'role',
+    'full_name',
+    'username',
+    'password',
+    'grade',
+    'section',
+    'teacher_id',
+    'is_active',
+    'must_change_password',
+])]
 #[Hidden(['password', 'remember_token'])]
 final class User extends Authenticatable
 {
