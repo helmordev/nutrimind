@@ -125,4 +125,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Initial Password
+    |--------------------------------------------------------------------------
+    |
+    | The initial password assigned to the SuperAdmin account during seeding.
+    | This should be changed immediately after the first login in production.
+    |
+    */
+
+    'admin_initial_password' => env('ADMIN_INITIAL_PASSWORD', 'password'),
+
 ];
