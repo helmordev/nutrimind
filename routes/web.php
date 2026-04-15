@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Teacher\ClassroomController;
+use App\Http\Controllers\Teacher\PasswordController;
 use App\Http\Controllers\Teacher\StudentController;
 use App\Http\Controllers\Web\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -18,13 +19,18 @@ Route::post('/logout', [LoginController::class, 'destroy'])
     ->name('logout');
 
 Route::middleware(['auth', 'role.teacher'])->prefix('teacher')->name('teacher.')->group(function (): void {
-    Route::view('/dashboard', 'teacher.dashboard')->name('dashboard');
-    Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
-    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
-    Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
-    Route::get('/classrooms/create', [ClassroomController::class, 'create'])->name('classrooms.create');
-    Route::post('/classrooms', [ClassroomController::class, 'store'])->name('classrooms.store');
-    Route::get('/classrooms/{classroom}', [ClassroomController::class, 'show'])->name('classrooms.show');
+    Route::get('/change-password', [PasswordController::class, 'edit'])->name('password.edit');
+    Route::post('/change-password', [PasswordController::class, 'update'])->name('password.update');
+
+    Route::middleware('password.changed')->group(function (): void {
+        Route::view('/dashboard', 'teacher.dashboard')->name('dashboard');
+        Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
+        Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+        Route::get('/classrooms', [ClassroomController::class, 'index'])->name('classrooms.index');
+        Route::get('/classrooms/create', [ClassroomController::class, 'create'])->name('classrooms.create');
+        Route::post('/classrooms', [ClassroomController::class, 'store'])->name('classrooms.store');
+        Route::get('/classrooms/{classroom}', [ClassroomController::class, 'show'])->name('classrooms.show');
+    });
 });
 
 Route::middleware(['auth', 'role.admin'])->prefix('admin')->name('admin.')->group(function (): void {

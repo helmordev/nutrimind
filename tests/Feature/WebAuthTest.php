@@ -21,7 +21,7 @@ test('teacher can login and is redirected to teacher dashboard', function (): vo
         'username' => $teacher->username,
         'password' => 'password123',
     ])
-        ->assertRedirect('/teacher/class');
+        ->assertRedirect(route('teacher.dashboard'));
 
     $this->assertAuthenticatedAs($teacher);
 });
@@ -150,7 +150,20 @@ test('session is regenerated after successful login', function (): void {
     $this->post('/login', [
         'username' => $teacher->username,
         'password' => 'password123',
-    ])->assertRedirect('/teacher/class');
+    ])->assertRedirect(route('teacher.dashboard'));
+
+    $this->assertAuthenticatedAs($teacher);
+});
+
+test('teacher with forced password change is redirected to password change form after login', function (): void {
+    $teacher = User::factory()->teacher()->mustChangePassword()->create([
+        'password' => bcrypt('password123'),
+    ]);
+
+    $this->post('/login', [
+        'username' => $teacher->username,
+        'password' => 'password123',
+    ])->assertRedirect(route('teacher.password.edit'));
 
     $this->assertAuthenticatedAs($teacher);
 });

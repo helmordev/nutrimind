@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Middleware\EnsureIsStudent;
 use App\Http\Middleware\EnsureIsSuperAdmin;
 use App\Http\Middleware\EnsureIsTeacher;
+use App\Http\Middleware\EnsurePasswordChanged;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -26,6 +27,9 @@ beforeEach(function (): void {
 
     Route::middleware(['auth', EnsureIsTeacher::class])
         ->get('/test/teacher-web', fn (): Factory|View => view('auth.login'));
+
+    Route::middleware(['auth', EnsureIsTeacher::class, EnsurePasswordChanged::class])
+        ->get('/test/teacher-password-changed', fn () => response()->json(['ok' => true]));
 
     Route::middleware(['auth', EnsureIsSuperAdmin::class])
         ->get('/test/admin-web', fn (): Factory|View => view('auth.login'));
@@ -112,6 +116,25 @@ test('unauthenticated user accessing teacher web route gets redirected to login'
     $response->assertRedirect(route('login'));
 });
 
+test('teacher with forced password change is redirected from protected teacher routes', function (): void {
+    $teacher = User::factory()->teacher()->mustChangePassword()->create();
+
+    $response = $this->actingAs($teacher)
+        ->get('/test/teacher-password-changed');
+
+    $response->assertRedirect(route('teacher.password.edit'));
+});
+
+test('teacher without forced password change can access protected teacher routes', function (): void {
+    $teacher = User::factory()->teacher()->create();
+
+    $response = $this->actingAs($teacher)
+        ->getJson('/test/teacher-password-changed');
+
+    $response->assertOk()
+        ->assertJson(['ok' => true]);
+});
+
 // ── EnsureIsSuperAdmin ──────────────────────────────────────────
 
 test('super admin can access admin-only route', function (): void {
@@ -167,5 +190,6 @@ test('role middleware aliases are registered in the application', function (): v
     expect($aliases)
         ->toHaveKey('role.student', EnsureIsStudent::class)
         ->toHaveKey('role.teacher', EnsureIsTeacher::class)
-        ->toHaveKey('role.admin', EnsureIsSuperAdmin::class);
+        ->toHaveKey('role.admin', EnsureIsSuperAdmin::class)
+        ->toHaveKey('password.changed', EnsurePasswordChanged::class);
 });
