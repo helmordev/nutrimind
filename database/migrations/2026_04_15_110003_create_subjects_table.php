@@ -13,9 +13,12 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table): void {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->unsignedTinyInteger('grade');
             $table->string('world_theme');
             $table->string('color_hex', 7);
             $table->timestamps();
+
+            $table->unique(['name', 'grade']);
         });
     }
 

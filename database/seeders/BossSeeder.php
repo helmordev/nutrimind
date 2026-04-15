@@ -40,13 +40,10 @@ final class BossSeeder extends Seeder
                     continue;
                 }
 
-                BossBattle::firstOrCreate(
-                    ['quarter_id' => $quarter->id],
-                    [
-                        'boss_name' => $bossName,
-                        'total_hp' => 500,
-                    ],
-                );
+                BossBattle::query()->firstOrCreate(['quarter_id' => $quarter->id], [
+                    'boss_name' => $bossName,
+                    'total_hp' => 500,
+                ]);
             }
         }
     }

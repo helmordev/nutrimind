@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -22,20 +24,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'student_id',
+    'subject_id',
+    'quarter_number',
+    'written_work',
+    'performance_task',
+    'quarterly_assessment',
+    'final_grade',
+    'computed_at',
+])]
 final class GradeRecord extends Model
 {
+    use HasFactory;
+    use HasFactory;
     use HasUuids;
-
-    protected $fillable = [
-        'student_id',
-        'subject_id',
-        'quarter_number',
-        'written_work',
-        'performance_task',
-        'quarterly_assessment',
-        'final_grade',
-        'computed_at',
-    ];
 
     /**
      * @return array<string, string>

@@ -16,16 +16,13 @@ final class QuarterSeeder extends Seeder
 
         foreach ($subjects as $subject) {
             for ($q = 1; $q <= 4; $q++) {
-                Quarter::firstOrCreate(
-                    [
-                        'subject_id' => $subject->id,
-                        'quarter_number' => $q,
-                    ],
-                    [
-                        'current_unlock_week' => 0,
-                        'is_globally_unlocked' => false,
-                    ],
-                );
+                Quarter::query()->firstOrCreate([
+                    'subject_id' => $subject->id,
+                    'quarter_number' => $q,
+                ], [
+                    'current_unlock_week' => 0,
+                    'is_globally_unlocked' => false,
+                ]);
             }
         }
     }

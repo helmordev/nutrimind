@@ -7,7 +7,9 @@ namespace App\Models;
 use App\Enums\Language;
 use App\Enums\TextSize;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -24,20 +26,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'user_id',
+    'language',
+    'master_volume',
+    'bgm_volume',
+    'sfx_volume',
+    'tts_enabled',
+    'text_size',
+    'colorblind_mode',
+])]
 final class StudentPreference extends Model
 {
+    use HasFactory;
     use HasUuids;
-
-    protected $fillable = [
-        'user_id',
-        'language',
-        'master_volume',
-        'bgm_volume',
-        'sfx_volume',
-        'tts_enabled',
-        'text_size',
-        'colorblind_mode',
-    ];
 
     /**
      * @return array<string, string>

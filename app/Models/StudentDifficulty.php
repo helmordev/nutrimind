@@ -7,7 +7,9 @@ namespace App\Models;
 use App\Enums\DifficultyLevel;
 use App\Enums\DifficultySetBy;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -21,17 +23,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'student_id',
+    'subject_id',
+    'difficulty',
+    'set_by',
+    'updated_at_by_teacher',
+])]
 final class StudentDifficulty extends Model
 {
+    use HasFactory;
     use HasUuids;
-
-    protected $fillable = [
-        'student_id',
-        'subject_id',
-        'difficulty',
-        'set_by',
-        'updated_at_by_teacher',
-    ];
 
     /**
      * @return array<string, string>

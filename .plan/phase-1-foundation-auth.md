@@ -53,7 +53,7 @@ Run in this order to satisfy foreign key constraints:
 - [ ] `users` — role (string, cast via `UserRole` enum), full_name, username, password, grade, section, teacher_id, is_active, must_change_password
 - [ ] `student_profiles` — user_id FK, lrn (unique, 12 chars), pin (hashed), pin_generated_at, last_login_at
 - [ ] `student_preferences` — user_id FK, language, volumes (master/bgm/sfx), tts_enabled, text_size, colorblind_mode
-- [ ] `subjects` — name, world_theme, color_hex
+- [ ] `subjects` — name, grade (tinyint unsigned), world_theme, color_hex, unique(name, grade)
 - [ ] `quarters` — subject_id FK, quarter_number, current_unlock_week, is_globally_unlocked
 - [ ] `levels` — quarter_id FK, level_number, title, matatag_competency_code/desc, unlock_week
 - [ ] `questions` — level_id FK, question_type (string, cast via `QuestionType` enum), content JSON, correct_answer JSON, difficulty, order_index, is_active
@@ -93,8 +93,8 @@ Create all enum classes in `app/Enums/` per Section 3a of the Server Plan:
 ### Task 4: All Database Seeders
 
 - [ ] `SuperAdminSeeder` — creates registrar account with password from `ADMIN_INITIAL_PASSWORD` env; uses `UserRole::SuperAdmin` enum
-- [ ] `SubjectSeeder` — 3 subjects (English/Library Dungeon, Science/Lab Cave, Health+PE/Sports Arena) with world_theme and color_hex
-- [ ] `QuarterSeeder` — 4 quarters per subject (12 total)
+- [ ] `SubjectSeeder` — 3 subjects x 2 grades = 6 records (English/Library Dungeon, Science/Lab Cave, Health+PE/Sports Arena) with grade-specific level titles
+- [ ] `QuarterSeeder` — 4 quarters per subject (24 total)
 - [ ] `LevelSeeder` — 4 levels per quarter (48 total) with titles from the curriculum grid, matatag_competency_code placeholders
 - [ ] `BossSeeder` — Word Warden (English Q1-Q4), Contaminus (Science Q1-Q4), Junklord (Health+PE Q1/Q3), Idle Rex (Health+PE Q2/Q4) — 12 boss battles total
 - [ ] `BadgeSeeder` — 6 badge types (First Boss Defeat, Three-Star Level, Quarter Complete, Full World Complete, 3-Day Streak, Screen Time Compliant)
@@ -201,7 +201,7 @@ Create all enum classes in `app/Enums/` per Section 3a of the Server Plan:
 
 - [ ] Create `Student\WorldController.php` with `index()` method
 - [ ] Return all 3 subjects as "worlds" with:
-  - Subject name, world_theme, color_hex
+  - Subject name, grade, world_theme, color_hex
   - Quarters with `current_unlock_week` and `is_globally_unlocked`
   - Levels with unlock status (basic — just return seeded data for now)
   - Student's difficulty setting per subject

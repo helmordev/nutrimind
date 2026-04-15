@@ -10,6 +10,8 @@ use Illuminate\Database\Seeder;
 final class SubjectSeeder extends Seeder
 {
     /**
+     * Subject definitions shared across grades.
+     *
      * @var array<int, array{name: string, world_theme: string, color_hex: string}>
      */
     private const array SUBJECTS = [
@@ -30,16 +32,21 @@ final class SubjectSeeder extends Seeder
         ],
     ];
 
+    /** @var array<int, int> */
+    private const array GRADES = [5, 6];
+
     public function run(): void
     {
-        foreach (self::SUBJECTS as $subject) {
-            Subject::firstOrCreate(
-                ['name' => $subject['name']],
-                [
+        foreach (self::GRADES as $grade) {
+            foreach (self::SUBJECTS as $subject) {
+                Subject::query()->firstOrCreate([
+                    'name' => $subject['name'],
+                    'grade' => $grade,
+                ], [
                     'world_theme' => $subject['world_theme'],
                     'color_hex' => $subject['color_hex'],
-                ],
-            );
+                ]);
+            }
         }
     }
 }

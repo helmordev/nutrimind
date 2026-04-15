@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Enums\QuestionType;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -22,19 +24,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'level_id',
+    'question_type',
+    'content',
+    'correct_answer',
+    'difficulty',
+    'order_index',
+    'is_active',
+])]
 final class Question extends Model
 {
+    use HasFactory;
     use HasUuids;
-
-    protected $fillable = [
-        'level_id',
-        'question_type',
-        'content',
-        'correct_answer',
-        'difficulty',
-        'order_index',
-        'is_active',
-    ];
 
     /**
      * @return array<string, string>

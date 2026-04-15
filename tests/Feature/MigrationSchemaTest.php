@@ -43,7 +43,7 @@ it('creates all required tables', function (): void {
     ];
 
     foreach ($requiredTables as $table) {
-        expect(Schema::hasTable($table))->toBeTrue("Table '{$table}' should exist");
+        expect(Schema::hasTable($table))->toBeTrue(sprintf("Table '%s' should exist", $table));
     }
 });
 
@@ -55,13 +55,13 @@ it('has correct columns on users table', function (): void {
     ];
 
     foreach ($expectedColumns as $column) {
-        expect(Schema::hasColumn('users', $column))->toBeTrue("Column '{$column}' should exist on users table");
+        expect(Schema::hasColumn('users', $column))->toBeTrue(sprintf("Column '%s' should exist on users table", $column));
     }
 
     $removedColumns = ['name', 'email', 'email_verified_at', 'remember_token'];
 
     foreach ($removedColumns as $column) {
-        expect(Schema::hasColumn('users', $column))->toBeFalse("Column '{$column}' should NOT exist on users table");
+        expect(Schema::hasColumn('users', $column))->toBeFalse(sprintf("Column '%s' should NOT exist on users table", $column));
     }
 });
 

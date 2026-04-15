@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Enums\ScreenTimeScope;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -24,22 +26,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'scope',
+    'scope_id',
+    'school_day_limit_min',
+    'weekend_limit_min',
+    'max_levels_school',
+    'max_levels_weekend',
+    'play_start_school',
+    'play_end_school',
+    'play_start_weekend',
+    'play_end_weekend',
+])]
 final class ScreenTimeSetting extends Model
 {
+    use HasFactory;
+    use HasFactory;
     use HasUuids;
-
-    protected $fillable = [
-        'scope',
-        'scope_id',
-        'school_day_limit_min',
-        'weekend_limit_min',
-        'max_levels_school',
-        'max_levels_weekend',
-        'play_start_school',
-        'play_end_school',
-        'play_start_weekend',
-        'play_end_weekend',
-    ];
 
     /**
      * @return array<string, string>

@@ -54,14 +54,11 @@ final class BadgeSeeder extends Seeder
     public function run(): void
     {
         foreach (self::BADGES as $badge) {
-            Badge::firstOrCreate(
-                ['trigger_type' => $badge['trigger_type']],
-                [
-                    'name' => $badge['name'],
-                    'description' => $badge['description'],
-                    'icon' => $badge['icon'],
-                ],
-            );
+            Badge::query()->firstOrCreate(['trigger_type' => $badge['trigger_type']], [
+                'name' => $badge['name'],
+                'description' => $badge['description'],
+                'icon' => $badge['icon'],
+            ]);
         }
     }
 }

@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Enums\DifficultyLevel;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -24,21 +26,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'student_id',
+    'level_id',
+    'difficulty_played',
+    'score',
+    'stars',
+    'attempts',
+    'time_taken_seconds',
+    'completed_at',
+    'local_id',
+])]
 final class StudentProgress extends Model
 {
+    use HasFactory;
     use HasUuids;
-
-    protected $fillable = [
-        'student_id',
-        'level_id',
-        'difficulty_played',
-        'score',
-        'stars',
-        'attempts',
-        'time_taken_seconds',
-        'completed_at',
-        'local_id',
-    ];
 
     /**
      * @return array<string, string>

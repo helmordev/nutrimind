@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Enums\DifficultyLevel;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -22,19 +24,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
  */
+#[Fillable([
+    'student_id',
+    'boss_battle_id',
+    'difficulty_played',
+    'score',
+    'hp_dealt',
+    'completed_at',
+    'local_id',
+])]
 final class BossResult extends Model
 {
+    use HasFactory;
+    use HasFactory;
     use HasUuids;
-
-    protected $fillable = [
-        'student_id',
-        'boss_battle_id',
-        'difficulty_played',
-        'score',
-        'hp_dealt',
-        'completed_at',
-        'local_id',
-    ];
 
     /**
      * @return array<string, string>
