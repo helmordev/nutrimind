@@ -22,7 +22,7 @@ final class StudentController
 {
     public function index(): RedirectResponse
     {
-        return redirect()->route('teacher.class');
+        return to_route('teacher.class');
     }
 
     public function create(): View
@@ -39,8 +39,8 @@ final class StudentController
         /** @var User $teacher */
         $teacher = $request->user();
 
-        $student = DB::transaction(function () use ($validated, $temporaryPassword, $pin, $teacher): User {
-            $student = User::create([
+        DB::transaction(function () use ($validated, $temporaryPassword, $pin, $teacher): User {
+            $student = User::query()->create([
                 'role' => UserRole::Student,
                 'full_name' => $validated['full_name'],
                 'username' => $validated['username'],
@@ -52,14 +52,14 @@ final class StudentController
                 'must_change_password' => true,
             ]);
 
-            StudentProfile::create([
+            StudentProfile::query()->create([
                 'user_id' => $student->id,
                 'lrn' => $validated['lrn'],
                 'pin' => $pin,
                 'pin_generated_at' => now(),
             ]);
 
-            StudentPreference::create([
+            StudentPreference::query()->create([
                 'user_id' => $student->id,
             ]);
 
@@ -67,7 +67,7 @@ final class StudentController
                 ->where('grade', $student->grade)
                 ->pluck('id')
                 ->each(function (string $subjectId) use ($student): void {
-                    StudentDifficulty::create([
+                    StudentDifficulty::query()->create([
                         'student_id' => $student->id,
                         'subject_id' => $subjectId,
                         'difficulty' => DifficultyLevel::Standard,
@@ -78,8 +78,7 @@ final class StudentController
             return $student;
         });
 
-        return redirect()
-            ->route('teacher.students.create')
+        return to_route('teacher.students.create')
             ->with('success', 'Student account created successfully.')
             ->with('temporary_password', $temporaryPassword)
             ->with('pin', $pin)

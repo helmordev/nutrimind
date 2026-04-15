@@ -57,7 +57,7 @@ final class LoginController
         $request->session()->regenerate();
 
         if ($user->role === UserRole::Teacher && $user->must_change_password) {
-            return redirect()->route('teacher.password.edit');
+            return to_route('teacher.password.edit');
         }
 
         return match ($user->role) {

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use App\Models\Classroom;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 // ──────────────────────────────────────────────
 // Index
@@ -95,7 +96,7 @@ test('teacher can create a classroom', function (): void {
         'is_active' => true,
     ]);
 
-    $classroom = Classroom::where('teacher_id', $teacher->id)->first();
+    $classroom = Classroom::query()->where('teacher_id', $teacher->id)->first();
     $response->assertRedirect(route('teacher.classrooms.show', $classroom));
     $response->assertSessionHas('success');
 });
@@ -109,7 +110,7 @@ test('classroom gets a unique 6-character room code', function (): void {
         'section' => 'B',
     ]);
 
-    $classroom = Classroom::where('teacher_id', $teacher->id)->first();
+    $classroom = Classroom::query()->where('teacher_id', $teacher->id)->first();
     expect($classroom->room_code)->toHaveLength(6);
     expect($classroom->room_code)->toMatch('/^[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{6}$/');
 });
@@ -119,7 +120,7 @@ test('room codes are unique across classrooms', function (): void {
 
     Classroom::factory()->count(5)->create(['teacher_id' => $teacher->id]);
 
-    $codes = Classroom::pluck('room_code')->toArray();
+    $codes = Classroom::query()->pluck('room_code')->toArray();
     expect($codes)->toHaveCount(5);
     expect(array_unique($codes))->toHaveCount(5);
 });

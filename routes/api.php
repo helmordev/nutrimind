@@ -26,5 +26,5 @@ Route::prefix('v1')->group(function (): void {
 
 Route::middleware(['auth:sanctum', 'role.student'])->prefix('v1/student')->group(function (): void {
     Route::get('/worlds', [WorldController::class, 'index']);
-    Route::get('/sync/state', [SyncController::class, 'state']);
+    Route::get('/sync/state', SyncController::class);
 });

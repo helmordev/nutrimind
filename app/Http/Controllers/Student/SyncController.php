@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 
 final class SyncController
 {
-    public function state(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         /** @var User $student */
         $student = $request->user();

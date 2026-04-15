@@ -51,7 +51,7 @@ final class Classroom extends Model
             for ($i = 0; $i < 6; $i++) {
                 $code .= $characters[random_int(0, mb_strlen($characters) - 1)];
             }
-        } while (self::where('room_code', $code)->exists());
+        } while (self::query()->where('room_code', $code)->exists());
 
         return $code;
     }

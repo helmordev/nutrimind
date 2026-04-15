@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use App\Enums\UserRole;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 test('teacher can view create student page', function (): void {
     $teacher = User::factory()->teacher()->create();
@@ -75,9 +76,9 @@ test('created student has hashed password', function (): void {
         'section' => 'B',
     ]);
 
-    $student = User::where('username', 'teststudent')->first();
+    $student = User::query()->where('username', 'teststudent')->first();
     expect($student->password)->not->toBe('password');
-    expect(password_verify('password', $student->password))->toBeFalse();
+    expect(password_verify('password', (string) $student->password))->toBeFalse();
 });
 
 test('temporary password is 8 characters', function (): void {
@@ -122,12 +123,12 @@ test('student profile has hashed pin', function (): void {
         'section' => 'B',
     ]);
 
-    $student = User::where('username', 'hashedpinstudent')->first();
+    $student = User::query()->where('username', 'hashedpinstudent')->first();
     $profile = $student->studentProfile;
     expect($profile)->not->toBeNull();
     expect($profile->lrn)->toBe('444444444444');
     // Pin should be hashed (not the raw 6-digit value)
-    expect(mb_strlen($profile->getRawOriginal('pin')))->toBeGreaterThan(6);
+    expect(mb_strlen((string) $profile->getRawOriginal('pin')))->toBeGreaterThan(6);
 });
 
 test('student is linked to the teacher who created it', function (): void {
@@ -141,7 +142,7 @@ test('student is linked to the teacher who created it', function (): void {
         'section' => 'C',
     ]);
 
-    $student = User::where('username', 'linkedstudent')->first();
+    $student = User::query()->where('username', 'linkedstudent')->first();
     expect($student->teacher_id)->toBe($teacher->id);
     expect($student->teacher->id)->toBe($teacher->id);
 });

@@ -19,11 +19,10 @@ final class ClassroomController
         $teacher = $request->user();
 
         $classrooms = $teacher->classrooms()
-            ->withCount('students')
-            ->orderByDesc('created_at')
+            ->withCount('students')->latest()
             ->get();
 
-        return view('teacher.classrooms.index', compact('classrooms'));
+        return view('teacher.classrooms.index', ['classrooms' => $classrooms]);
     }
 
     public function create(): View
@@ -38,7 +37,7 @@ final class ClassroomController
         /** @var User $teacher */
         $teacher = $request->user();
 
-        $classroom = Classroom::create([
+        $classroom = Classroom::query()->create([
             'teacher_id' => $teacher->id,
             'name' => $validated['name'],
             'grade' => $validated['grade'],
@@ -47,8 +46,7 @@ final class ClassroomController
             'is_active' => true,
         ]);
 
-        return redirect()
-            ->route('teacher.classrooms.show', $classroom)
+        return to_route('teacher.classrooms.show', $classroom)
             ->with('success', 'Classroom created successfully.');
     }
 
@@ -61,6 +59,6 @@ final class ClassroomController
 
         $classroom->load('students');
 
-        return view('teacher.classrooms.show', compact('classroom'));
+        return view('teacher.classrooms.show', ['classroom' => $classroom]);
     }
 }

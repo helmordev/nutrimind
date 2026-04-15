@@ -29,7 +29,7 @@ final class TeacherController
         $validated = $request->validated();
         $temporaryPassword = Str::random(8);
 
-        User::create([
+        User::query()->create([
             'role' => UserRole::Teacher,
             'full_name' => $validated['full_name'],
             'username' => $validated['username'],
@@ -40,8 +40,7 @@ final class TeacherController
             'must_change_password' => true,
         ]);
 
-        return redirect()
-            ->route('admin.teachers.create')
+        return to_route('admin.teachers.create')
             ->with('success', 'Teacher account created successfully.')
             ->with('temporary_password', $temporaryPassword)
             ->with('teacher_name', $validated['full_name'])

@@ -35,8 +35,7 @@ final class PasswordController
             'must_change_password' => false,
         ]);
 
-        return redirect()
-            ->route('teacher.class')
+        return to_route('teacher.class')
             ->with('success', 'Password changed successfully.');
     }
 }

@@ -41,6 +41,7 @@ test('phase 1 account chain works end to end', function (): void {
 
     expect($teacherCreate->status())->toBe(302);
     expect($teacherCreate->headers->get('Location'))->toEndWith('/admin/teachers/create');
+
     $teacherCreate->assertSessionHas('temporary_password');
 
     $temporaryPassword = $teacherCreate->getSession()->get('temporary_password');
@@ -70,6 +71,7 @@ test('phase 1 account chain works end to end', function (): void {
 
     expect($passwordChange->status())->toBe(302);
     expect($passwordChange->headers->get('Location'))->toEndWith('/teacher/class');
+
     $passwordChange->assertSessionHas('success', 'Password changed successfully.');
 
     $studentCreate = $this->actingAs($teacher->fresh())
@@ -83,6 +85,7 @@ test('phase 1 account chain works end to end', function (): void {
 
     expect($studentCreate->status())->toBe(302);
     expect($studentCreate->headers->get('Location'))->toEndWith('/teacher/students/create');
+
     $studentCreate->assertSessionHas('pin');
 
     $studentPin = $studentCreate->getSession()->get('pin');

@@ -65,11 +65,11 @@ test('created teacher has a hashed password', function (): void {
             'section' => 'Section B',
         ]);
 
-    $teacher = User::where('username', 'testteacher')->first();
+    $teacher = User::query()->where('username', 'testteacher')->first();
 
     expect($teacher)->not->toBeNull()
         ->and($teacher->password)->not->toBe('')
-        ->and(password_verify('anything', $teacher->password))->toBeFalse();
+        ->and(password_verify('anything', (string) $teacher->password))->toBeFalse();
 });
 
 test('temporary password is 8 characters long', function (): void {

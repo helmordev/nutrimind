@@ -23,7 +23,7 @@ final class ClassroomFactory extends Factory
 
         return [
             'teacher_id' => User::factory()->teacher(),
-            'name' => "Grade {$grade} - Section {$section}",
+            'name' => sprintf('Grade %s - Section %s', $grade, $section),
             'grade' => $grade,
             'section' => $section,
             'room_code' => Classroom::generateRoomCode(),
