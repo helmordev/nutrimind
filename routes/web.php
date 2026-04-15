@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Teacher\ClassroomController;
 use App\Http\Controllers\Teacher\PasswordController;
@@ -34,7 +36,8 @@ Route::middleware(['auth', 'role.teacher'])->prefix('teacher')->name('teacher.')
 });
 
 Route::middleware(['auth', 'role.admin'])->prefix('admin')->name('admin.')->group(function (): void {
-    Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/teachers/create', [TeacherController::class, 'create'])->name('teachers.create');
     Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
+    Route::get('/students', [AdminStudentController::class, 'index'])->name('students.index');
 });

@@ -6,8 +6,8 @@
 - [completed] Test, format, and commit Task 12.
 - [completed] Complete Task 13: Student API - Sync State Endpoint.
 - [completed] Test, format, and commit Task 13.
-- [pending] Complete Task 14: Basic Admin Dashboard.
-- [pending] Test, format, and commit Task 14.
+- [completed] Complete Task 14: Basic Admin Dashboard.
+- [completed] Test, format, and commit Task 14.
 - [pending] Complete Task 15: Basic Teacher Dashboard.
 - [pending] Test, format, and commit Task 15.
 - [pending] Complete Task 16: Postman Collection.
@@ -23,3 +23,5 @@
 - Verification for Task 12: `php artisan test --compact tests/Feature/StudentAuthTest.php tests/Feature/StudentWorldApiTest.php` passed with 16 tests, and `vendor/bin/pint --dirty --format agent` passed.
 - Task 13 added `GET /api/v1/student/sync/state`, seeded default student preferences and per-subject difficulties during teacher-created student setup, and returned combined worlds, preferences, difficulties, screen time, badges, and grades payloads.
 - Verification for Task 13: `php artisan test --compact tests/Feature/TeacherStudentTest.php tests/Feature/StudentAuthTest.php tests/Feature/StudentWorldApiTest.php tests/Feature/StudentSyncStateApiTest.php` passed with 40 tests, and `vendor/bin/pint --dirty --format agent` passed.
+- Task 14 replaced the static admin dashboard route with controller-backed metrics, added an admin layout, and introduced a minimal read-only student list for working dashboard navigation.
+- Verification for Task 14: `php artisan test --compact tests/Feature/AdminDashboardTest.php tests/Feature/AdminTeacherTest.php tests/Feature/WebAuthTest.php` passed with 34 tests, and `vendor/bin/pint --dirty --format agent` passed.
